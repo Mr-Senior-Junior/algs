@@ -11,6 +11,8 @@
 
 Этот алгоритм может быть полезен для небольших коллекций данных или когда данные не отсортированы. Но если коллекция большая, лучше рассмотреть более быстрые алгоритмы поиска, например, бинарный поиск.  
 
+![Sequential search](/resources/3_search/sequential_search.png)
+
 Ссылки на код в *WANDBOX*  
 [Программа на C++](https://wandbox.org/permlink/QMEPxapmGvEpEIjH)  
 [Программа на Python](https://wandbox.org/permlink/ugRQV38VkAllPVn2)  
