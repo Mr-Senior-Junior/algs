@@ -6,6 +6,7 @@
 #include <concepts>
 
 
+
 template <std::input_or_output_iterator Iter, std::three_way_comparable Ty>
 Iter sequential_search(const Iter begin, const Iter end, Ty searchVal)
 {
@@ -41,7 +42,3 @@ int main(int, char**)
 
 	return 0;
 }
-
-
-
-
