@@ -3,7 +3,7 @@ cmake_minimum_required(VERSION 3.14)
 project(connectivity_algorithm)
 
 
-SET(EXE_LIST "3.1_sequential_search")
+SET(EXE_LIST "3.1_sequential_search;3.2_binary_search")
 
 FOREACH(EXE ${EXE_LIST})
 
