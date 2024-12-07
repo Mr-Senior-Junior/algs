@@ -22,5 +22,5 @@
 [Программа на Python](https://wandbox.org/permlink/LmC9zUk8MqO2Te4p)  
 
 Исходные файлы с кодом  
-[Файл C++](/src/3_search/C++/3.2_binary_search.cpp)
+[Файл C++](/src/3_search/C++/3.2_binary_search.cpp)  
 [Файл Python](/src/3_search/Python/3.2_binary_search.py)
