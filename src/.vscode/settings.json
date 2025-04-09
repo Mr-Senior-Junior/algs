@@ -60,6 +60,17 @@
 		"optional": "cpp",
 		"ratio": "cpp",
 		"stop_token": "cpp",
-		"thread": "cpp"
+		"thread": "cpp",
+		"coroutine": "cpp",
+		"queue": "cpp",
+		"stack": "cpp",
+		"variant": "cpp",
+		"array": "cpp",
+		"deque": "cpp",
+		"functional": "cpp",
+		"ranges": "cpp",
+		"span": "cpp",
+		"unordered_map": "cpp",
+		"xhash": "cpp"
 	}
 }
