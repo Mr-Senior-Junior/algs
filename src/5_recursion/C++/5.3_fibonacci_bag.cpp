@@ -127,7 +127,7 @@ int GOOD_knap2(int size)
 	for (int row = 0; row < rows; ++row) {
 		Item& item = items[row];
 		for (int col = 0; col < cols; ++col) {
-			upVal = dp[std::clamp(row, 0, 4)][col];
+			upVal = dp[std::clamp(row - 1, 0, 4)][col];
 			if (col < item.size) {
 				dp[row][col] = upVal;
 				continue;
@@ -159,7 +159,7 @@ int main(int, char**)
 
 // bag tests
 #if 1
-	std::cout << bag::GOOD_knap().evaluate(63) << std::endl;
+	std::cout << bag::GOOD_knap().evaluate(781) << std::endl;
 	std::cout << bag::GOOD_knap2(5000) << std::endl;
 	std::cout << bag::BAD_knap(63) << std::endl;
 #endif

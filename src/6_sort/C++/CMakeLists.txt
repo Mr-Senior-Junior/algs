@@ -3,11 +3,12 @@ cmake_minimum_required(VERSION 3.14)
 project(connectivity_algorithm)
 
 
-SET(EXE_LIST "")
+aux_source_directory(${PROJECT_SOURCE_DIR} SRC_LIST)
 
-FOREACH(EXE ${EXE_LIST})
+foreach(SRC ${SRC_LIST})
 
-	add_executable(${EXE} "${EXE}.cpp")
+	get_filename_component(EXE ${SRC} NAME_WLE)
+	add_executable(${EXE} ${SRC})
 	
 	set_target_properties(${EXE}
 		PROPERTIES
@@ -33,4 +34,4 @@ FOREACH(EXE ${EXE_LIST})
 		)
 	endif()
 
-ENDFOREACH()
+endforeach()

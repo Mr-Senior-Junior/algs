@@ -71,6 +71,9 @@
 		"ranges": "cpp",
 		"span": "cpp",
 		"unordered_map": "cpp",
-		"xhash": "cpp"
+		"xhash": "cpp",
+		"chrono": "cpp",
+		"forward_list": "cpp",
+		"sstream": "cpp"
 	}
 }

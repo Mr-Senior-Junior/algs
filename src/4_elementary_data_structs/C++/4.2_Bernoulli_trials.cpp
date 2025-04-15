@@ -8,10 +8,11 @@ int heads()
 }
 
 
+
+// M экспериментов по N подбрасываний
 static const int N = 40;
 static const int M = 6000;
 
-// M экспериментов по N подбрасываний
 
 
 int main(int, char**)
