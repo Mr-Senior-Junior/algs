@@ -3,7 +3,7 @@
 
 
 
-void printBinNumberRecursion(size_t power, std::string str = std::string{})
+void print_bin_number_recursion(size_t power, std::string str = std::string{})
 {
 // (2^power)-1 iterations
 
@@ -12,8 +12,8 @@ void printBinNumberRecursion(size_t power, std::string str = std::string{})
 		return;
 	}
 
-	printBinNumberRecursion(power - 1, str + "0");
-	printBinNumberRecursion(power - 1, str + "1");
+	print_bin_number_recursion(power - 1, str + "0");
+	print_bin_number_recursion(power - 1, str + "1");
 }
 
 
@@ -22,7 +22,7 @@ void printBinNumberRecursion(size_t power, std::string str = std::string{})
 
 int main(int, char**)
 {
-	printBinNumberRecursion(6);
+	print_bin_number_recursion(6);
 
 	return 0;
 }

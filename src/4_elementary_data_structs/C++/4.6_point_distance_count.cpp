@@ -25,21 +25,21 @@ using Elem = Node*;
 
 
 template <typename Ty>
-concept DefaultInitOrPointer = std::default_initializable<Ty> || std::is_pointer_v<Ty>;
+concept default_init_or_pointer = std::default_initializable<Ty> || std::is_pointer_v<Ty>;
 
-template <DefaultInitOrPointer Ty>
-Ty** allocate2D(size_t rows, size_t cols);
-
-template <typename Ty>
-void deallocate2D(Ty** array, size_t rows);
+template <default_init_or_pointer Ty>
+Ty** allocate_2D(size_t rows, size_t cols);
 
 template <typename Ty>
-concept HasNextProperty = requires(Ty node) {
+void deallocate_2D(Ty** array, size_t rows);
+
+template <typename Ty>
+concept has_next_property = requires(Ty node) {
 	{node->next++} -> std::same_as<Ty>;
 };
 
-template <HasNextProperty Ty>
-void deallocateListsFrom2D(Ty** array, size_t rows, size_t cols);
+template <has_next_property Ty>
+void deallocate_lists_from_2D(Ty** array, size_t rows, size_t cols);
 
 
 
@@ -50,7 +50,7 @@ static size_t count = 0;
 static Elem** grid = nullptr;
 
 
-void insertPoint(Point&& p);
+void insert_point(Point&& p);
 double distance(const Point& p1, const Point& p2);
 
 
@@ -58,7 +58,7 @@ int main(int, char**)
 {
 	// G + 2 - Чтобы свободно проводить проверки квадратов
 	// вокруг целевого без дополнительных проверок (т.е. фиктивная граница)
-	grid = allocate2D<Elem>(G + 2, G + 2);
+	grid = allocate_2D<Elem>(G + 2, G + 2);
 
 	std::random_device dev;
 	std::mt19937 gen(dev());
@@ -66,13 +66,13 @@ int main(int, char**)
 
 	for (int i = 0; i < N; ++i) {
 		std::cout << rdis(gen) << "\n";
-		insertPoint(Point(rdis(gen), rdis(gen)));
+		insert_point(Point(rdis(gen), rdis(gen)));
 	}
 
 	std::cout << "Sections count = " << count << std::endl;
 
-	deallocateListsFrom2D<Elem>(grid, G + 2, G + 2);
-	deallocate2D(grid, G + 2);
+	deallocate_lists_from_2D<Elem>(grid, G + 2, G + 2);
+	deallocate_2D(grid, G + 2);
 
 	return 0;
 }
@@ -81,8 +81,8 @@ int main(int, char**)
 
 
 
-template <DefaultInitOrPointer Ty>
-Ty** allocate2D(size_t rows, size_t cols)
+template <default_init_or_pointer Ty>
+Ty** allocate_2D(size_t rows, size_t cols)
 {
 	Ty** array = new Ty*[rows];
 	for (int i = 0; i < rows; ++i) {
@@ -100,7 +100,7 @@ Ty** allocate2D(size_t rows, size_t cols)
 }
 
 template <typename Ty>
-void deallocate2D(Ty** array, size_t rows)
+void deallocate_2D(Ty** array, size_t rows)
 {
 	for (int i = 0; i < rows; ++i) {
 		delete[] array[i];
@@ -109,8 +109,8 @@ void deallocate2D(Ty** array, size_t rows)
 	delete[] array;
 }
 
-template <HasNextProperty Ty>
-void deallocateListsFrom2D(Ty** array, size_t rows, size_t cols)
+template <has_next_property Ty>
+void deallocate_lists_from_2D(Ty** array, size_t rows, size_t cols)
 {
 	Ty nodeForDelete = nullptr;
 	Ty tmp = nullptr;
@@ -130,7 +130,7 @@ void deallocateListsFrom2D(Ty** array, size_t rows, size_t cols)
 
 
 
-void insertPoint(Point&& p)
+void insert_point(Point&& p)
 {
 	int X = static_cast<int>(p.x * G + 1);
 	int Y = static_cast<int>(p.y * G + 1);

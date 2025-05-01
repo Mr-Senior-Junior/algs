@@ -33,7 +33,7 @@ struct NodeValue {
 };
 
 template <typename Func, typename T>
-concept IsVisitFuncForTreeNode = requires(Func f, Node<T>* node)
+concept is_visit_func_for_tree_node = requires(Func f, Node<T>* node)
 {
 	f(node);
 };
@@ -43,19 +43,19 @@ concept IsVisitFuncForTreeNode = requires(Func f, Node<T>* node)
 // ******** CREATE AND DESTROY ********
 
 template <std::destructible T>
-void deleteTree(Node<T>* tree)
+void delete_tree(Node<T>* tree)
 {
 	if (!tree) {
 		return;
 	}
 
-	deleteTree(tree->left);
-	deleteTree(tree->right);
+	delete_tree(tree->left);
+	delete_tree(tree->right);
 	delete tree;
 }
 
 template <typename T>
-[[nodiscard]] Node<T>* createTree(const std::vector<T>& vec, const T& nullVal)
+[[nodiscard]] Node<T>* create_tree(const std::vector<T>& vec, const T& nullVal)
 {
 	if (vec.empty()) {
 		return nullptr;
@@ -68,7 +68,7 @@ template <typename T>
 
 	for (auto& val : vec) {
 		if (q.empty()) {
-			deleteTree(result);
+			delete_tree(result);
 			return nullptr;
 		}
 
@@ -92,30 +92,30 @@ template <typename T>
 // ******** PRINT ********
 
 template <typename Print_Type> requires requires(const Print_Type& val) {std::cout << val;}
-void printNode(const Print_Type& val, int spaceCount)
+void print_node(const Print_Type& val, int spaceCount)
 {
 	std::cout << std::setw(2 * (spaceCount + 1)) << val << std::endl;
 }
 
 template <typename T>
-void printTree(Node<T>* tree, int h = 0)
+void print_tree(Node<T>* tree, int h = 0)
 {
 	if (!tree) {
-		printNode('*', h);
+		print_node('*', h);
 		return;
 	}
 
-	printTree(tree->right, h + 1);
-	printNode(tree->val, h);
-	printTree(tree->left, h + 1);
+	print_tree(tree->right, h + 1);
+	print_node(tree->val, h);
+	print_tree(tree->left, h + 1);
 }
 
 
 
 // ******** BYPASS ********
 
-template <typename T, IsVisitFuncForTreeNode<T> Func>
-void directBypass(Node<T>* tree, Func visit)
+template <typename T, is_visit_func_for_tree_node<T> Func>
+void direct_bypass(Node<T>* tree, Func visit)
 {
 #if 0
 	if (!tree) {
@@ -123,8 +123,8 @@ void directBypass(Node<T>* tree, Func visit)
 	}
 
 	visit(tree);
-	directBypass(tree->left, visit);
-	directBypass(tree->right, visit);
+	direct_bypass(tree->left, visit);
+	direct_bypass(tree->right, visit);
 #endif
 
 #if 1
@@ -145,16 +145,16 @@ void directBypass(Node<T>* tree, Func visit)
 #endif
 }
 
-template <typename T, IsVisitFuncForTreeNode<T> Func>
-void reverseBypass(Node<T>* tree, Func visit)
+template <typename T, is_visit_func_for_tree_node<T> Func>
+void reverse_bypass(Node<T>* tree, Func visit)
 {
 #if 0
 	if (!tree) {
 		return;
 	}
 
-	reverseBypass(tree->left, visit);
-	reverseBypass(tree->right, visit);
+	reverse_bypass(tree->left, visit);
+	reverse_bypass(tree->right, visit);
 	visit(tree);
 #endif
 
@@ -181,17 +181,17 @@ void reverseBypass(Node<T>* tree, Func visit)
 #endif
 }
 
-template <typename T, IsVisitFuncForTreeNode<T> Func>
-void transverseBypass(Node<T>* tree, Func visit)
+template <typename T, is_visit_func_for_tree_node<T> Func>
+void transverse_bypass(Node<T>* tree, Func visit)
 {
 #if 0
 	if (!tree) {
 		return;
 	}
 
-	transverseBypass(tree->left, visit);
+	transverse_bypass(tree->left, visit);
 	visit(tree);
-	transverseBypass(tree->right, visit);
+	transverse_bypass(tree->right, visit);
 #endif
 
 #if 1
@@ -217,8 +217,8 @@ void transverseBypass(Node<T>* tree, Func visit)
 #endif
 }
 
-template <typename T, IsVisitFuncForTreeNode<T> Func>
-void levelBypass(Node<T>* tree, Func visit)
+template <typename T, is_visit_func_for_tree_node<T> Func>
+void level_bypass(Node<T>* tree, Func visit)
 {
 	std::queue<Node<T>*> qu;
 	qu.push(tree);
@@ -240,13 +240,13 @@ void levelBypass(Node<T>* tree, Func visit)
 // ******** TREE PARAMETERS ********
 
 template <typename T>
-[[nodiscard]] int nodesCount(const Node<T>* tree) noexcept
+[[nodiscard]] int nodes_count(const Node<T>* tree) noexcept
 {
 	if (!tree) {
 		return 0;
 	}
 
-	return nodesCount(tree->left) + nodesCount(tree->right) + 1;
+	return nodes_count(tree->left) + nodes_count(tree->right) + 1;
 }
 
 template <typename T>
@@ -273,7 +273,7 @@ concept comparable_iter_value = std::input_or_output_iterator<Iter> && comparabl
 
 
 template <comparable_iter_value Iter>
-Node<std::remove_reference_t<decltype( *std::declval<Iter>() )>>* createTournamentTree(Iter begin, Iter end)
+Node<std::remove_reference_t<decltype( *std::declval<Iter>() )>>* create_tournament_tree(Iter begin, Iter end)
 {
 	using Type = std::remove_reference_t<decltype(*begin)>;
 
@@ -287,8 +287,8 @@ Node<std::remove_reference_t<decltype( *std::declval<Iter>() )>>* createTourname
 	}
 
 	auto nextMid = std::next(mid);
-	node->left = createTournamentTree(begin, nextMid);
-	node->right = createTournamentTree(nextMid, end);
+	node->left = create_tournament_tree(begin, nextMid);
+	node->right = create_tournament_tree(nextMid, end);
 	node->val = std::max(node->left->val, node->right->val);
 	return node;
 }
@@ -304,28 +304,28 @@ int main(int, char**)
 	try {
 #if 0
 		std::vector<char> treeTemplate = {'A', 'B', 'C', 'D', '\0', 'F', 'G'};
-		binary_tree::Node<char>* tree = binary_tree::createTree(treeTemplate, '\0');
+		binary_tree::Node<char>* tree = binary_tree::create_tree(treeTemplate, '\0');
 		if (!tree) {
-			std::cout << "binary_tree::createTree ERROR!\n";
+			std::cout << "binary_tree::create_tree ERROR!\n";
 			return 0;
 		}
 
-		binary_tree::transverseBypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
-		binary_tree::reverseBypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
-		binary_tree::directBypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
-		binary_tree::levelBypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
-		binary_tree::printTree(tree);
-		std::cout << binary_tree::nodesCount(tree) << std::endl;
+		binary_tree::transverse_bypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
+		binary_tree::reverse_bypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
+		binary_tree::direct_bypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
+		binary_tree::level_bypass(tree, [](binary_tree::Node<char>* node){ std::cout << node->val << std::endl; });
+		binary_tree::print_tree(tree);
+		std::cout << binary_tree::nodes_count(tree) << std::endl;
 		std::cout << binary_tree::height(tree) << std::endl;
-		binary_tree::deleteTree(tree);
+		binary_tree::delete_tree(tree);
 
 #endif
 
 #if 1
 		std::vector<char> vec = {'A', 'M', 'P', 'R', 'O', 'L', 'E'};
-		binary_tree::Node<char>* tournament = binary_tree::createTournamentTree(vec.begin(), vec.end());
-		binary_tree::printTree(tournament);
-		binary_tree::deleteTree(tournament);
+		binary_tree::Node<char>* tournament = binary_tree::create_tournament_tree(vec.begin(), vec.end());
+		binary_tree::print_tree(tournament);
+		binary_tree::delete_tree(tournament);
 
 #endif
 

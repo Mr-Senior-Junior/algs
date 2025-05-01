@@ -16,14 +16,14 @@ struct Node
 
 
 template <typename T>
-concept IsOutEnable = requires (T val)
+concept Is_out_enable = requires (T val)
 {
 	std::cout << val;
 };
 
 
-template <IsOutEnable T>
-void printList(Node<T>* head)
+template <Is_out_enable T>
+void print_list(Node<T>* head)
 {
 	std::cout << "[";
 	while (head) {
@@ -48,7 +48,7 @@ void reverse()
 		*inserter = new IntNode(i, nullptr);
 		inserter = &(*inserter)->next;
 	}
-	printList(head);
+	print_list(head);
 
 
 	IntNode* prev = nullptr;
@@ -57,7 +57,7 @@ void reverse()
 		std::swap(prev, head);
 	}
 	head = prev;
-	printList(head);
+	print_list(head);
 
 
 	IntNode* tmp = nullptr;

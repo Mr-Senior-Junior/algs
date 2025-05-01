@@ -2,8 +2,8 @@
 #include <random>
 
 
-static const int N = 10;
 // Количество элементов в списке
+static const int N = 10;
 
 
 template <typename T>
@@ -24,7 +24,7 @@ concept IsOutEnable = requires (T val)
 
 
 template <IsOutEnable T>
-void printList(Node<T>* head)
+void print_list(Node<T>* head)
 {
 	std::cout << "[";
 	while (head) {
@@ -39,7 +39,7 @@ void printList(Node<T>* head)
 
 
 
-void insertSort()
+void insert_sort()
 {
 	using IntNode = Node<int>;
 
@@ -53,7 +53,7 @@ void insertSort()
 		*inserter = new IntNode(dist(gen), nullptr);
 		inserter = &(*inserter)->next;
 	}
-	printList(head);
+	print_list(head);
 
 
 	IntNode* tmp = nullptr;
@@ -72,7 +72,7 @@ void insertSort()
 		head = tmp;
 	}
 	head = newPrevHead.next;
-	printList(head);
+	print_list(head);
 
 
 	while (head) {
@@ -86,7 +86,7 @@ void insertSort()
 
 int main(int, char**)
 {
-	insertSort();
+	insert_sort();
 
 	return 0;
 }

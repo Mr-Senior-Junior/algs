@@ -1,3 +1,4 @@
+#pragma once
 #include <iostream>
 #include <concepts>
 #include <random>
@@ -14,14 +15,18 @@ concept printable_iterator =
 	requires(std::remove_reference_t<decltype(*std::declval<Iter>())> val) {
 		std::cout << val;
 	};
+}
+
+
+template <typename Array>
+concept is_cmp_array = requires(Array arr) {
+	{arr[0] < arr[0]} -> std::convertible_to<bool>;
+};
 
 
 template <typename Iter>
 concept out_iterator =
 	std::output_iterator<Iter, std::remove_reference_t<decltype(*std::declval<Iter>())>>;
-
-}
-
 
 
 template <typename Iter>
@@ -34,7 +39,7 @@ concept comparable_iter_value =
 
 
 template <helper_impl::printable_iterator Iter>
-void printCollection(Iter begin, Iter end)
+void print_collection(Iter begin, Iter end)
 {
 	while (begin != end) {
 		std::cout << *begin << " ";
@@ -44,21 +49,27 @@ void printCollection(Iter begin, Iter end)
 }
 
 template <std::ranges::range Range>
-void printCollection(Range r)
+void print_collection(Range&& r)
 {
-	printCollection(r.begin(), r.end());
+	print_collection(r.begin(), r.end());
 }
 
 
-template <helper_impl::out_iterator Iter>
-void randomInit(Iter inserter, size_t size) 
+int get_random_int()
 {
-	std::random_device dev;
-	std::mt19937 gen(dev());
-	std::uniform_int_distribution dist(0, 1000);
+	static std::random_device dev;
+	static std::mt19937 gen(dev());
+	static std::uniform_int_distribution dist(0, 1000);
 
+	return dist(gen);
+}
+
+
+template <out_iterator Iter>
+void random_init(Iter inserter, size_t size) 
+{
 	for (size_t i = 0; i < size; ++i) {
-		inserter = dist(gen);
+		inserter = get_random_int();
 	}
 }
 

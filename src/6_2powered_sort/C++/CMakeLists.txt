@@ -16,6 +16,11 @@ foreach(SRC ${SRC_LIST})
 			CXX_STANDARD_REQUIRED ON
 	)
 
+	target_include_directories(${EXE}
+		PRIVATE
+			"../../0_common/C++"
+	)
+
 	if (CMAKE_CXX_COMPILER_ID MATCHES "Clang" OR CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
 		target_compile_options(${EXE}
 			PRIVATE 

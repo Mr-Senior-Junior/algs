@@ -1,9 +1,9 @@
 #include <iostream>
 
 
+// Из N элементов итеративно удаляют M-й элемент
 static const int N = 9;
 static const int M = 5;
-// Из N элементов итеративно удаляют M-й элемент
 
 
 
@@ -15,7 +15,7 @@ struct Node {
 	Node* next;
 };
 
-void listSolution()
+void list_solution()
 {
 	using IntNode = Node<int>;
 	IntNode* head = new IntNode(1, nullptr);
@@ -40,7 +40,7 @@ void listSolution()
 }
 
 
-void arraySolution()
+void array_solution()
 {
 	int array[N];
 	int i = 0;
@@ -63,8 +63,8 @@ void arraySolution()
 
 int main(int, char**)
 {
-	listSolution();
-	arraySolution();
+	list_solution();
+	array_solution();
 
 	return 0;
 }
