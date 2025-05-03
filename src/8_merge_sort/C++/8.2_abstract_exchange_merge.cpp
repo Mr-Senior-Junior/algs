@@ -3,9 +3,12 @@
 #include <vector>
 
 
+// #define WITH_ITERATORS
 
 
 
+
+#ifdef WITH_ITERATORS
 
 template <comparable_iter_value Iter>
 void abstract_exchange_merge(Iter begin, Iter mid, Iter end)
@@ -39,6 +42,31 @@ void abstract_exchange_merge(Iter begin, Iter mid, Iter end)
 	}
 }
 
+#else
+
+template <is_cmp_array Array>
+void abstract_exchange_merge(Array& arr, int l, int m, int r)
+{
+	using Elem = std::decay_t<decltype(arr[l])>;
+	Elem* buf = new Elem[r - l + 1];
+
+
+	for (int i = l; i <= m; ++i) {
+		buf[i] = arr[i];
+	}
+
+	for (int i = 0; i < r - m; ++i) {
+		buf[m + i + 1] = arr[r - i];
+	}
+
+	for (int k = l, left = l, right = r; k <= r; ++k) {
+		arr[k] = (buf[left] < buf[right] ? buf[left++] : buf[right--]);
+	}
+
+	delete[] buf;
+}
+
+#endif
 
 
 
@@ -75,9 +103,11 @@ int main(int, char**)
 				  std::make_move_iterator(vec2.begin()),
 				  std::make_move_iterator(vec2.end()));
 
-	abstract_exchange_merge(result.begin(),
-							std::next(result.begin(), vec1.size()),
-							result.end());
+#ifdef WITH_ITERATORS
+	abstract_exchange_merge(result.begin(), std::next(result.begin(), SIZE1), result.end());
+#else
+	abstract_exchange_merge(result, 0, SIZE1 - 1, SIZE1 + SIZE2 - 1);
+#endif
 
 	print_collection(result);
 

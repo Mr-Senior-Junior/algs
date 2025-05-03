@@ -4,6 +4,11 @@
 
 
 
+// #define WITH_ITERATORS
+
+
+
+#ifdef WITH_ITERATORS
 
 
 template <comparable_iter_value Iter>
@@ -39,10 +44,6 @@ void merge(Iter begin, Iter mid, Iter end)
 }
 
 
-
-
-
-
 template <comparable_iter_value Iter>
 void down_up_merge_sort(Iter begin, Iter end)
 {
@@ -62,10 +63,54 @@ void down_up_merge_sort(Iter begin, Iter end)
 }
 
 
+#else
+
+
+template <
+	is_cmp_array Array,
+	is_cmp_array Buffer>
+void abstract_exchange_merge(Array& arr, int l, int m, int r, Buffer& buf)
+{
+	for (int i = l; i <= m; ++i) {
+		buf[i] = arr[i];
+	}
+
+	for (int i = 0; i < r - m; ++i) {
+		buf[m + i + 1] = arr[r - i];
+	}
+
+	for (int k = l, left = l, right = r; k <= r; ++k) {
+		arr[k] = (buf[left] < buf[right] ? buf[left++] : buf[right--]);
+	}
+}
+
+
+template <is_cmp_array Array>
+void down_up_merge_sort(Array& arr, int l, int r)
+{
+	using Elem = std::decay_t<decltype(arr[l])>;
+	Elem* buf = new Elem[r - l + 1];
+
+	int size = r - l + 1;
+	for (int i = 1; i < size; i += i) {
+		for (int j = 0; j < size - i; j += i + i) {
+			abstract_exchange_merge(arr, j,
+									j + i - 1,
+									std::min(j + i + i - 1, r),
+									buf);
+		}
+	}
+
+	delete[] buf;
+}
+
+
+#endif
 
 
 
-static const int SIZE = 200000;
+
+static const int SIZE = 1000000;
 
 
 
@@ -77,10 +122,18 @@ int main(int, char**)
 	random_init(std::back_inserter(vec), SIZE);
 
 
+	std::cout << std::ranges::is_sorted(vec) << std::endl;
 	// print_collection(vec);
 
-	std::cout << function_execution_time(down_up_merge_sort<decltype(vec.begin())>, vec.begin(), vec.end()) << " ms" << std::endl;
 
+#ifdef WITH_ITERATORS
+	std::cout << function_execution_time(down_up_merge_sort<decltype(vec.begin())>, vec.begin(), vec.end()) << " ms" << std::endl;
+#else
+	std::cout << function_execution_time(down_up_merge_sort<decltype(vec)>, vec, 0, SIZE - 1) << " ms" << std::endl;
+#endif
+
+
+	std::cout << std::ranges::is_sorted(vec) << std::endl;
 	// print_collection(vec);
 
 

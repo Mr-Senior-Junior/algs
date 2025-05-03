@@ -73,7 +73,11 @@ int main(int, char**)
 	std::vector<int> vec1, vec2, result;
 	vec1.reserve(SIZE1);
 	vec2.reserve(SIZE2);
+#ifdef WITH_ITERATORS
+	result.reserve(SIZE1 + SIZE2);
+#else
 	result.resize(SIZE1 + SIZE2);
+#endif
 
 	random_init(std::back_inserter(vec1), SIZE1);
 	random_init(std::back_inserter(vec2), SIZE2);

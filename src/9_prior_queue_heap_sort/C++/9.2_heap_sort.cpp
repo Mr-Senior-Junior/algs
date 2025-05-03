@@ -19,7 +19,7 @@ void heap_sort(Array arr, int size)
 
 
 
-static const int SIZE = 200000;
+static const int SIZE = 1000000;
 
 
 
@@ -33,10 +33,12 @@ int main(int, char**)
 		arr[i] = get_random_int();
 	}
 
+	std::cout << std::is_sorted(arr, arr + SIZE) << std::endl;
 	// print_collection(arr + 1, arr + SIZE + 1);
 
 	std::cout << function_execution_time(heap_sort<decltype(arr)>, arr, SIZE) << " ms\n";
 
+	std::cout << std::is_sorted(arr, arr + SIZE) << std::endl;
 	// print_collection(arr + 1, arr + SIZE + 1);
 
 
