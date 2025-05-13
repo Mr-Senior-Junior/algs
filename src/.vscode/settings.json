@@ -76,6 +76,7 @@
 		"forward_list": "cpp",
 		"sstream": "cpp",
 		"set": "cpp",
-		"xtree": "cpp"
+		"xtree": "cpp",
+		"numeric": "cpp"
 	}
 }
